@@ -161,6 +161,10 @@ wine reg add "HKLM\SYSTEM\CurrentControlSet\Services\rvpnnetmp" /v ErrorControl 
 } > /dev/null 2>&1
 echo "[+] Registry configured"
 
+# Restart wineserver so it loads the driver on next boot
+wineserver -k 2>/dev/null || true
+sleep 1
+
 # 8. Start netsh relay
 rm -f "$CMD_FILE" "${CMD_FILE}.proc"
 (
