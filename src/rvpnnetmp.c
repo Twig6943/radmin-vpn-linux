@@ -395,7 +395,6 @@ static void __stdcall rx_thread_proc(PVOID context)
                     LONG batch_n = 0;
                     PFILE_OBJECT seen[64];
                     LONG seen_n = 0;
-                    LONG new_head = g_irp_queue.Head;
                     LONG remaining = 0;
 
                     for (LONG i = 0; i < g_irp_queue.Count; i++) {
@@ -704,7 +703,6 @@ static NTSTATUS NTAPI DispatchRead(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 
     LONG ridx = g_rx_ring.read_idx;
 
-drain_ring:
     if (ridx < g_rx_ring.write_idx) {
         /* Frames available — TLV-encode as many as fit in the buffer */
         PUCHAR outBuf = NULL;

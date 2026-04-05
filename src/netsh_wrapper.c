@@ -39,9 +39,8 @@ static void spy_log(const char *fmt, ...) {
 int wmain(int argc, WCHAR *argv[])
 {
     char cmdline[2048] = "";
-    char linux_cmd[1024];
     int i;
-    char *addr = NULL, *mask = NULL, *name = NULL;
+    char *addr = NULL, *mask = NULL;
 
     /* Reconstruct command line */
     for (i = 1; i < argc; i++) {
