@@ -1,0 +1,9 @@
+build/
+wineprefix/
+*.sys
+*.dll
+*.exe
+!src/*.c
+tap_bridge
+*.log
+*.o

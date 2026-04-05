@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mingw-w64
+        run: sudo apt-get update && sudo apt-get install -y gcc-mingw-w64
+
+      - name: Build
+        run: make
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: radmin-vpn-linux
+          path: |
+            build/rvpnnetmp.sys
+            build/adapter_hook.dll
+            build/rvpn_launcher.exe
+            build/netsh.exe
+            build/tap_bridge
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: radmin-vpn-linux
+          path: build/
+
+      - name: Package
+        run: tar czf radmin-vpn-linux-${{ github.ref_name }}.tar.gz -C build .
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: radmin-vpn-linux-${{ github.ref_name }}.tar.gz
+          generate_release_notes: true
