@@ -23,8 +23,6 @@ jobs:
 
       - name: AppImage
         run: |
-          cp run.sh ./packaging/
-          cp ./build/* ./packaging/
           cd packaging/
           chmod +x AppImage.sh
           ./AppImage.sh
