@@ -82,7 +82,7 @@ Produces:
 2. **Every run**: creates a TAP device, starts the TAP-to-FIFO bridge, configures Wine registry (adapter GUID, driver service), launches the Radmin VPN service and GUI
 3. **On exit** (Ctrl+C or close GUI): kills Wine, removes TAP device, cleans up
 
-The wineprefix is stored in `./wineprefix/`. A persistent MAC address is generated on first run and saved in the wineprefix.
+The wineprefix is stored in `$HOME/.local/share/wineprefixes/radmin_vpn`. A persistent MAC address is generated on first run and saved in the wineprefix.
 
 ## Architecture
 
@@ -96,7 +96,7 @@ The wineprefix is stored in `./wineprefix/`. A persistent MAC address is generat
 
 ## Troubleshooting
 
-**GUI stuck on "Waiting for adapter"**: the driver isn't loading. Check that `wineprefix/drive_c/radmin_driver.log` exists and has content. If empty, the driver service registration may be missing — delete the wineprefix and re-run.
+**GUI stuck on "Waiting for adapter"**: the driver isn't loading. Check that `$HOME/.local/share/wineprefixes/radmin_vpn/drive_c/radmin_driver.log` exists and has content. If empty, the driver service registration may be missing — delete the wineprefix and re-run.
 
 **Service dies immediately**: check `/tmp/radmin_service.log` for Wine errors. Common cause: old wineprefix from a different Wine version. Delete `./wineprefix/` and re-run.
 
