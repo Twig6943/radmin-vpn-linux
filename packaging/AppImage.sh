@@ -25,7 +25,7 @@ wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 
 # Point to your binaries
-./quick-sharun ./tap_bridge
+./quick-sharun ./tap_bridge ./run.sh
 
 # Make AppImage
 ./quick-sharun --make-appimage
