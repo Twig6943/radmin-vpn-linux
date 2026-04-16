@@ -14,6 +14,17 @@ MAC_FILE="$WINEPREFIX/radmin_mac"
 RELAY_PID=""
 BRIDGE_PID=""
 
+if ! command -v wine >/dev/null 2>&1; then
+    echo "Wine is not installed. Please install wine."
+    exit 1
+fi
+
+wine_ver=$(wine --version | grep -oE '[0-9]+' | head -n1)
+
+if (( wine_ver < 11 )); then
+    echo "Wine version is too old ($wine_ver). Please upgrade system wine or install AppImage wine."
+fi
+
 # Parse args
 INSTALLER=""
 for arg in "$@"; do
