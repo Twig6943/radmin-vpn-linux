@@ -6,5 +6,6 @@ StartupWMClass=tap_bridge
 Exec=tap_bridge %f
 Terminal=true
 NoDisplay=true
+Icon=DUMMY
 Type=Application
 Categories=Network;
