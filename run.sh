@@ -8,7 +8,7 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 export WINEDEBUG="-all"
 export WINEPREFIX="$HOME/.local/share/wineprefixes/radmin_vpn"
 
-export RADMIN="$WINEPREFIX/drive_c/Program Files (x86)/Radmin VPN"
+export RADMIN_DIR="$WINEPREFIX/drive_c/Program Files (x86)/Radmin VPN"
 export BUILD_DIR="$DIR/build"
 export TAP_DEV="radminvpn0"
 export CMD_FILE="/tmp/radmin_netsh_cmd"
@@ -56,7 +56,7 @@ wineserver -k 2>/dev/null || true
 sleep 1
 
 # 2. Install Radmin if not present
-if [ ! -f "$RADMIN/RvControlSvc.exe" ]; then
+if [ ! -f "$RADMIN_DIR/RvControlSvc.exe" ]; then
     if [ -z "$INSTALLER" ] || [ ! -f "$INSTALLER" ]; then
         echo "[-] Radmin VPN not installed and no installer found."
         echo "    Download from https://www.radmin-vpn.com/ and run:"
@@ -74,9 +74,9 @@ if [ ! -f "$RADMIN/RvControlSvc.exe" ]; then
     echo "[*] Waiting for installer to finish..."
     for _ in $(seq 1 30); do
         sleep 2
-        [ -f "$RADMIN/RvControlSvc.exe" ] && break
+        [ -f "$RADMIN_DIR/RvControlSvc.exe" ] && break
     done
-    if [ ! -f "$RADMIN/RvControlSvc.exe" ]; then
+    if [ ! -f "$RADMIN_DIR/RvControlSvc.exe" ]; then
         echo "[-] Installer failed — RvControlSvc.exe not found"
         exit 1
     fi
@@ -96,8 +96,8 @@ fi
 echo "[*] Installing components..."
 chmod +x "$BUILD_DIR/tap_bridge" 2>/dev/null || true
 cp "$BUILD_DIR/rvpnnetmp.sys" "$WINEPREFIX/drive_c/windows/system32/drivers/"
-cp "$BUILD_DIR/adapter_hook.dll" "$RADMIN/"
-cp "$BUILD_DIR/rvpn_launcher.exe" "$RADMIN/"
+cp "$BUILD_DIR/adapter_hook.dll" "$RADMIN_DIR/"
+cp "$BUILD_DIR/rvpn_launcher.exe" "$RADMIN_DIR/"
 cp "$BUILD_DIR/netsh.exe" "$WINEPREFIX/drive_c/windows/syswow64/netsh.exe"
 
 # 4. Generate or load persistent adapter MAC
@@ -191,7 +191,7 @@ rm -f "$LOG" "$WINEPREFIX/drive_c/radmin_driver.log"
 
 # 10. Start service
 echo "[*] Starting Radmin VPN service..."
-cd "$RADMIN"
+cd "$RADMIN_DIR"
 wine rvpn_launcher.exe /run > /tmp/radmin_service.log 2>&1 &
 
 # 11. Wait for service ready + extract VPN IP
@@ -229,7 +229,7 @@ echo ""
 
 # 13. Launch GUI
 echo "[*] Starting GUI..."
-wine RvRvpnGui.exe > /tmp/radmin_gui.log 2>&1 &
+wine "$RADMIN_DIR/RvRvpnGui.exe" > /tmp/radmin_gui.log 2>&1 &
 GUI_PID=$!
 
 echo "[+] Radmin VPN running. Close the GUI or press Ctrl+C to stop."
