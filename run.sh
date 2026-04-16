@@ -10,6 +10,7 @@ export WINEPREFIX="$HOME/.local/share/wineprefixes/radmin_vpn"
 
 export RADMIN_DIR="$WINEPREFIX/drive_c/Program Files (x86)/Radmin VPN"
 export BUILD_DIR="$DIR/build"
+
 export TAP_DEV="radminvpn0"
 export CMD_FILE="/tmp/radmin_netsh_cmd"
 export LOG="$WINEPREFIX/drive_c/ProgramData/Famatech/Radmin VPN/service.log"
