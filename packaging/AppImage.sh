@@ -24,6 +24,10 @@ rm -rf AppDir dist
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 
+# Copy files
+cp ../run.sh .
+cp ../build/* .
+
 # Copy exec
 mkdir -p ./AppDir/bin/build
 cp -v ./*.{dll,exe,sys} ./AppDir/bin/build || :
